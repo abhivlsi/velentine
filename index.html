@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy Valentine Koyel ❤️</title>
+
+  <style>
+    body{
+      margin:0;
+      background:#000;
+      overflow:hidden;
+      text-align:center;
+      font-family: Arial, sans-serif;
+      color:#fff;
+    }
+    .container{
+      position:relative;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      padding:18px;
+      box-sizing:border-box;
+    }
+    img{
+      margin-top:24px;
+      width:min(520px, 86vw);
+      border-radius:20px;
+      box-shadow:0 0 25px hotpink;
+      display:none; /* hidden until start */
+    }
+    h1{
+      margin:18px 0 6px;
+      font-size:34px;
+      text-shadow:0 0 15px red;
+      display:none;
+    }
+    h2{
+      margin:0 0 14px;
+      font-size:24px;
+      color:pink;
+      text-shadow:0 0 10px hotpink;
+      display:none;
+    }
+
+    /* Start overlay */
+    .overlay{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: radial-gradient(circle at top, rgba(255,0,140,.22), rgba(0,0,0,.95));
+      z-index:10;
+      padding:20px;
+      box-sizing:border-box;
+    }
+    .startCard{
+      width:min(520px, 92vw);
+      background: rgba(20,20,28,.75);
+      border:1px solid rgba(255,105,180,.35);
+      border-radius:22px;
+      padding:22px 18px;
+      box-shadow: 0 0 30px rgba(255,105,180,.25);
+      backdrop-filter: blur(6px);
+    }
+    .startCard h3{
+      margin:0 0 8px;
+      font-size:22px;
+    }
+    .startCard p{
+      margin:0 0 16px;
+      opacity:.9;
+      line-height:1.35;
+    }
+    .btn{
+      padding:12px 22px;
+      font-size:18px;
+      border:0;
+      border-radius:30px;
+      background: hotpink;
+      color:white;
+      cursor:pointer;
+      box-shadow: 0 0 15px rgba(255,105,180,.8);
+      width:100%;
+    }
+    .btn:active{ transform: scale(.99); }
+
+    /* hearts */
+    .heart{
+      position:absolute;
+      color: pink;
+      font-size: 28px;
+      animation: floatUp 5s linear forwards;
+      pointer-events:none;
+    }
+    @keyframes floatUp{
+      from{ transform: translateY(110vh); opacity: 1; }
+      to{ transform: translateY(-15vh); opacity: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Tap-to-start overlay -->
+  <div class="overlay" id="overlay">
+    <div class="startCard">
+      <h3>💖 Tap to open your surprise, Koyel 💖</h3>
+      <p>Music will start and love hearts will fly everywhere ❤️</p>
+      <button class="btn" id="startBtn">✨ Open Surprise ✨</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1 id="title1">❤️ I LOVE YOU KOYEL ❤️</h1>
+    <h2 id="title2">Happy Valentine’s Day My Valentine Girl 💖</h2>
+
+    <img id="photo" src="photo.jpg" alt="My Valentine Koyel" />
+
+    <!-- Music -->
+    <audio id="music" loop>
+      <source src="music.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <script>
+    const overlay = document.getElementById("overlay");
+    const startBtn = document.getElementById("startBtn");
+    const music = document.getElementById("music");
+    const photo = document.getElementById("photo");
+    const t1 = document.getElementById("title1");
+    const t2 = document.getElementById("title2");
+
+    // Hearts animation
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+      heart.style.fontSize = (22 + Math.random() * 18) + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    let heartTimer = null;
+
+    async function startSurprise(){
+      // show content
+      overlay.style.display = "none";
+      t1.style.display = "block";
+      t2.style.display = "block";
+      photo.style.display = "block";
+
+      // start hearts
+      heartTimer = setInterval(createHeart, 160);
+
+      // start music (works because user tapped)
+      try {
+        await music.play();
+      } catch (e) {
+        // If something blocks it, user can tap again
+        console.log("Music play blocked:", e);
+      }
+    }
+
+    startBtn.addEventListener("click", startSurprise);
+  </script>
+</body>
+</html>
